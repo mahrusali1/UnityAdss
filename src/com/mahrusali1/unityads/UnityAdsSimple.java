@@ -14,11 +14,22 @@ import com.google.appinventor.components.runtime.AndroidViewComponent;
 import com.google.appinventor.components.runtime.ComponentContainer;
 import com.google.appinventor.components.runtime.EventDispatcher;
 import com.google.appinventor.components.runtime.errors.YailRuntimeError;
+import com.google.appinventor.components.annotations.DesignerComponent;
 
 import com.unity3d.ads.*;
 import com.unity3d.services.banners.BannerErrorInfo;
 import com.unity3d.services.banners.BannerView;
 import com.unity3d.services.banners.UnityBannerSize;
+
+@DesignerComponent(
+        version = 1,
+        description = "Unity Ads extension",
+        category = com.google.appinventor.components.common.ComponentCategory.EXTENSION,
+        nonVisible = true,
+        iconName = "images/extension.png"
+)
+
+
 
 public class UnityAdsSimple extends AndroidNonvisibleComponent
         implements IUnityAdsLoadListener, IUnityAdsShowListener, BannerView.IListener {
