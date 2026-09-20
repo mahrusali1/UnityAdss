@@ -1,76 +1,62 @@
 name: Build UnityAdss
 
 on:
-  workflow_dispatch:
   push:
     branches:
       - main
+      - master
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout UnityAdss
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Checkout App Inventor Extension Template
-        uses: actions/checkout@v4
+      - name: Download App Inventor dependencies
+        run: |
+          rm -rf lib/appinventor
+          git clone --depth 1 https://github.com/mit-cml/extension-deps.git lib/appinventor
+
+      - name: Check App Inventor dependencies
+        run: |
+          echo "=== lib/appinventor ==="
+          ls -lah lib/appinventor
+
+          echo "=== JAR files ==="
+          find lib/appinventor -maxdepth 1 -type f -name "*.jar" -print
+
+      - name: Setup Java
+        uses: actions/setup-java@v5
         with:
-          repository: mit-cml/extension-template
-          path: extension-template
-          submodules: recursive
+          distribution: temurin
+          java-version: '8'
 
-      - name: Copy source
+      - name: Install Ant
         run: |
-          rm -rf extension-template/src
-          cp -r src extension-template/src
+          sudo apt-get update
+          sudo apt-get install -y ant
 
-      - name: Copy dependencies
+      - name: Check Unity Ads dependency
         run: |
-          mkdir -p extension-template/lib/deps
-          cp -f lib/deps/*.jar extension-template/lib/deps/
+          echo "=== lib/deps ==="
+          ls -lah lib/deps
 
-      - name: Build extension
-        working-directory: extension-template
+      - name: Build Extension
+        run: ant extensions
+
+      - name: Check AIX
         run: |
-          ant extensions
-
-      - name: Inspect build output
-        working-directory: extension-template
-        run: |
-          echo "=== OUT DIRECTORY ==="
-          find out -maxdepth 5 -type f -print || true
-
-          echo "=== BUILD DIRECTORY ==="
-          find build -maxdepth 5 -type f -print | head -200 || true
-
-          echo "=== ALL AIX FILES ==="
-          find . -type f -iname "*.aix" -print || true
-
-          echo "=== ALL ZIP FILES ==="
-          find . -type f -iname "*.zip" -print || true
-
-      - name: Prepare artifact
-        run: |
-          mkdir -p output
-
-          find "$GITHUB_WORKSPACE" \
-            -type f \
-            -iname "*.aix" \
-            -exec cp {} output/ \;
-
-          echo "=== Files prepared for upload ==="
-          ls -lah output
-
-          if [ -z "$(find output -type f -iname '*.aix' -print -quit)" ]; then
-            echo "ERROR: No AIX file was generated."
-            exit 1
-          fi
+          echo "=== OUT ==="
+          ls -lah out
+          echo "=== AIX ==="
+          find out -maxdepth 1 -type f -name "*.aix" -print
 
       - name: Upload AIX
         uses: actions/upload-artifact@v4
         with:
-          name: UnityAdss
-          path: output/*.aix
+          name: UnityAdss-AIX
+          path: out/*.aix
           if-no-files-found: error
