@@ -16,6 +16,7 @@ import com.google.appinventor.components.runtime.EventDispatcher;
 import com.google.appinventor.components.runtime.errors.YailRuntimeError;
 import com.google.appinventor.components.annotations.DesignerComponent;
 import com.google.appinventor.components.annotations.PropertyCategory;
+import com.google.appinventor.components.annotations.SimpleObject;
 
 
 import com.unity3d.ads.*;
@@ -25,6 +26,7 @@ import com.unity3d.services.banners.UnityBannerSize;
 
 @DesignerComponent(
         version = 1,
+        versionName = "1.0",
         description = "Unity Ads extension",
         category = com.google.appinventor.components.common.ComponentCategory.EXTENSION,
         nonVisible = true,
@@ -32,7 +34,7 @@ import com.unity3d.services.banners.UnityBannerSize;
 )
 
 
-
+@SimpleObject(external = true)
 public class UnityAdsSimple extends AndroidNonvisibleComponent
         implements IUnityAdsLoadListener, IUnityAdsShowListener, BannerView.IListener {
 
