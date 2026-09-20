@@ -4,9 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.view.ViewGroup;
 
+import com.google.appinventor.components.annotations.DesignerComponent;
 import com.google.appinventor.components.annotations.DesignerProperty;
+import com.google.appinventor.components.annotations.PropertyCategory;
 import com.google.appinventor.components.annotations.SimpleEvent;
 import com.google.appinventor.components.annotations.SimpleFunction;
+import com.google.appinventor.components.annotations.SimpleObject;
 import com.google.appinventor.components.annotations.SimpleProperty;
 import com.google.appinventor.components.common.PropertyTypeConstants;
 import com.google.appinventor.components.runtime.AndroidNonvisibleComponent;
@@ -14,16 +17,12 @@ import com.google.appinventor.components.runtime.AndroidViewComponent;
 import com.google.appinventor.components.runtime.ComponentContainer;
 import com.google.appinventor.components.runtime.EventDispatcher;
 import com.google.appinventor.components.runtime.errors.YailRuntimeError;
-import com.google.appinventor.components.annotations.DesignerComponent;
-import com.google.appinventor.components.annotations.PropertyCategory;
-import com.google.appinventor.components.annotations.SimpleObject;
-
 
 import com.unity3d.ads.*;
 import com.unity3d.services.banners.BannerErrorInfo;
 import com.unity3d.services.banners.BannerView;
 import com.unity3d.services.banners.UnityBannerSize;
-import com.google.appinventor.components.annotations.UsesAssets;
+
 
 @DesignerComponent(
         version = 1,
@@ -33,13 +32,11 @@ import com.google.appinventor.components.annotations.UsesAssets;
         nonVisible = true,
         iconName = "images/extension.png"
 )
-
-
 @SimpleObject(external = true)
-@UsesAssets(assets = "images/extension.png")
-@UsesLibraries(libraries = "unityads404.jar")
 public class UnityAdsSimple extends AndroidNonvisibleComponent
-        implements IUnityAdsLoadListener, IUnityAdsShowListener, BannerView.IListener {
+        implements IUnityAdsLoadListener,
+                   IUnityAdsShowListener,
+                   BannerView.IListener {
 
     private final Context context;
     private final Activity activity;
@@ -48,12 +45,18 @@ public class UnityAdsSimple extends AndroidNonvisibleComponent
     private boolean testMode = false;
     private BannerView theBannerView;
 
+
     public UnityAdsSimple(ComponentContainer container) {
         super(container.$form());
 
         context = container.$context();
         activity = (Activity) container.$context();
     }
+
+
+    // =========================
+    // PROPERTIES
+    // =========================
 
     @DesignerProperty(
             editorType = PropertyTypeConstants.PROPERTY_TYPE_BOOLEAN,
@@ -65,11 +68,12 @@ public class UnityAdsSimple extends AndroidNonvisibleComponent
     }
 
     @SimpleProperty(
-        category = PropertyCategory.BEHAVIOR
-)
-public boolean TestMode() {
-    return testMode;
-}
+            category = PropertyCategory.BEHAVIOR
+    )
+    public boolean TestMode() {
+        return testMode;
+    }
+
 
     @DesignerProperty
     @SimpleProperty
@@ -78,11 +82,12 @@ public boolean TestMode() {
     }
 
     @SimpleProperty(
-        category = PropertyCategory.BEHAVIOR
-)
-public String GameId() {
-    return gameId;
-}
+            category = PropertyCategory.BEHAVIOR
+    )
+    public String GameId() {
+        return gameId;
+    }
+
 
     // =========================
     // INITIALIZATION EVENTS
@@ -104,6 +109,7 @@ public String GameId() {
                 message
         );
     }
+
 
     // =========================
     // AD LOADING EVENTS
@@ -130,6 +136,7 @@ public String GameId() {
                 message
         );
     }
+
 
     // =========================
     // AD SHOW EVENTS
@@ -184,6 +191,7 @@ public String GameId() {
         );
     }
 
+
     // =========================
     // BANNER EVENTS
     // =========================
@@ -228,6 +236,7 @@ public String GameId() {
         );
     }
 
+
     // =========================
     // INITIALIZE
     // =========================
@@ -257,17 +266,22 @@ public String GameId() {
         );
     }
 
+
     // =========================
     // INTERSTITIAL
     // =========================
 
     @SimpleFunction
     public void LoadInterstitialAd(String adUnitId) {
-        UnityAds.load(adUnitId, this);
+        UnityAds.load(
+                adUnitId,
+                this
+        );
     }
 
     @SimpleFunction
     public void ShowInterstitialAd(String adUnitId) {
+
         UnityAds.show(
                 this.activity,
                 adUnitId,
@@ -275,17 +289,23 @@ public String GameId() {
         );
     }
 
+
     // =========================
     // REWARDED
     // =========================
 
     @SimpleFunction
     public void LoadRewardedAd(String adUnitId) {
-        UnityAds.load(adUnitId, this);
+
+        UnityAds.load(
+                adUnitId,
+                this
+        );
     }
 
     @SimpleFunction
     public void ShowRewardedAd(String adUnitId) {
+
         UnityAds.show(
                 activity,
                 adUnitId,
@@ -293,6 +313,7 @@ public String GameId() {
                 this
         );
     }
+
 
     // =========================
     // BANNER
@@ -323,6 +344,7 @@ public String GameId() {
         }
     }
 
+
     @SimpleFunction
     public void ShowBannerAd(
             AndroidViewComponent in) {
@@ -339,6 +361,7 @@ public String GameId() {
         viewGroup.addView(theBannerView);
     }
 
+
     @SimpleFunction
     public Object CustomSize(
             int width,
@@ -350,20 +373,25 @@ public String GameId() {
         );
     }
 
+
     @SimpleProperty
     public Object DynamicSize() {
+
         return UnityBannerSize.getDynamicSize(
                 context
         );
     }
 
+
     @SimpleFunction
     public Object NormalSize() {
+
         return new UnityBannerSize(
                 320,
                 50
         );
     }
+
 
     // =========================
     // UNITY ADS LOAD CALLBACKS
@@ -376,6 +404,7 @@ public String GameId() {
         AdLoaded(adUnitId);
     }
 
+
     @Override
     public void onUnityAdsFailedToLoad(
             String adUnitId,
@@ -387,6 +416,7 @@ public String GameId() {
                 message
         );
     }
+
 
     // =========================
     // UNITY ADS SHOW CALLBACKS
@@ -404,6 +434,7 @@ public String GameId() {
         );
     }
 
+
     @Override
     public void onUnityAdsShowStart(
             String adUnitId) {
@@ -411,12 +442,14 @@ public String GameId() {
         AdShowStarted(adUnitId);
     }
 
+
     @Override
     public void onUnityAdsShowClick(
             String adUnitId) {
 
         AdShowClicked(adUnitId);
     }
+
 
     @Override
     public void onUnityAdsShowComplete(
@@ -434,6 +467,7 @@ public String GameId() {
         }
     }
 
+
     // =========================
     // BANNER CALLBACKS
     // =========================
@@ -449,6 +483,7 @@ public String GameId() {
         );
     }
 
+
     @Override
     public void onBannerClick(
             BannerView bannerView) {
@@ -457,6 +492,7 @@ public String GameId() {
                 bannerView.getPlacementId()
         );
     }
+
 
     @Override
     public void onBannerFailedToLoad(
@@ -468,6 +504,7 @@ public String GameId() {
                 bannerErrorInfo.errorMessage
         );
     }
+
 
     @Override
     public void onBannerLeftApplication(
