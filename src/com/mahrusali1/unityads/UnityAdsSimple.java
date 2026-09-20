@@ -23,6 +23,7 @@ import com.unity3d.ads.*;
 import com.unity3d.services.banners.BannerErrorInfo;
 import com.unity3d.services.banners.BannerView;
 import com.unity3d.services.banners.UnityBannerSize;
+import com.google.appinventor.components.annotations.UsesAssets;
 
 @DesignerComponent(
         version = 1,
@@ -35,6 +36,8 @@ import com.unity3d.services.banners.UnityBannerSize;
 
 
 @SimpleObject(external = true)
+@UsesAssets(assets = "images/extension.png")
+@UsesLibraries(libraries = "unityads404.jar")
 public class UnityAdsSimple extends AndroidNonvisibleComponent
         implements IUnityAdsLoadListener, IUnityAdsShowListener, BannerView.IListener {
 
