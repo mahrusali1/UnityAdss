@@ -50,6 +50,19 @@ jobs:
       - name: Build Extension
         run: ant extensions
 
+      - name: Inspect generated component metadata
+        run: |
+          echo "========================================"
+          echo "=== simple_components.json ==="
+          echo "========================================"
+          cat build/classes/simple_components.json
+
+          echo ""
+          echo "========================================"
+          echo "=== simple_components_build_info.json ==="
+          echo "========================================"
+          cat build/classes/simple_components_build_info.json
+
       - name: Diagnose build output
         run: |
           echo "========================================"
