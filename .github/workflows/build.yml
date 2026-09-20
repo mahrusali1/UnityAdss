@@ -1,0 +1,37 @@
+name: Build UnityAdss
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download Unity Ads SDK 4.4.0
+        run: |
+          mkdir -p lib/deps
+          curl -L \
+            https://raw.githubusercontent.com/mahrusali1/UnityAd/develop/deps/unityads404.jar \
+            -o lib/deps/unityads404.jar
+
+      - name: Build AIX Extension
+        id: build
+        uses: pavi2410/AIX-Action@main
+        with:
+          source-dir: src
+          package-name: com.mahrusali1.unityads
+          appinventor-repo: mit-cml/appinventor-sources
+          appinventor-branch: master
+
+      - name: Upload AIX
+        uses: actions/upload-artifact@v4
+        with:
+          name: UnityAdss
+          path: ${{ steps.build.outputs.extension-path }}
