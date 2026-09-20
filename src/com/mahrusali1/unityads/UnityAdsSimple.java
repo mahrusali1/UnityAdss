@@ -17,6 +17,8 @@ import com.google.appinventor.components.runtime.AndroidViewComponent;
 import com.google.appinventor.components.runtime.ComponentContainer;
 import com.google.appinventor.components.runtime.EventDispatcher;
 import com.google.appinventor.components.runtime.errors.YailRuntimeError;
+import com.google.appinventor.components.annotations.UsesLibraries;
+import com.google.appinventor.components.annotations.UsesAssets;
 
 import com.unity3d.ads.*;
 import com.unity3d.services.banners.BannerErrorInfo;
