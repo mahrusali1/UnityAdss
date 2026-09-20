@@ -36,22 +36,34 @@ jobs:
         run: |
           ant extensions
 
-      - name: Find generated AIX
+      - name: Inspect build output
+        working-directory: extension-template
         run: |
-          echo "=== Searching for AIX files ==="
-          find . -type f -name "*.aix" -print
-          echo "=== Searching entire workspace ==="
-          find "$GITHUB_WORKSPACE" -type f -name "*.aix" -print
+          echo "=== OUT DIRECTORY ==="
+          find out -maxdepth 5 -type f -print || true
+
+          echo "=== BUILD DIRECTORY ==="
+          find build -maxdepth 5 -type f -print | head -200 || true
+
+          echo "=== ALL AIX FILES ==="
+          find . -type f -iname "*.aix" -print || true
+
+          echo "=== ALL ZIP FILES ==="
+          find . -type f -iname "*.zip" -print || true
 
       - name: Prepare artifact
         run: |
           mkdir -p output
-          find "$GITHUB_WORKSPACE" -type f -name "*.aix" -exec cp {} output/ \;
+
+          find "$GITHUB_WORKSPACE" \
+            -type f \
+            -iname "*.aix" \
+            -exec cp {} output/ \;
 
           echo "=== Files prepared for upload ==="
           ls -lah output
 
-          if [ -z "$(find output -type f -name '*.aix' -print -quit)" ]; then
+          if [ -z "$(find output -type f -iname '*.aix' -print -quit)" ]; then
             echo "ERROR: No AIX file was generated."
             exit 1
           fi
