@@ -15,6 +15,7 @@ import com.google.appinventor.components.runtime.ComponentContainer;
 import com.google.appinventor.components.runtime.EventDispatcher;
 import com.google.appinventor.components.runtime.errors.YailRuntimeError;
 import com.google.appinventor.components.annotations.DesignerComponent;
+import com.google.appinventor.components.annotations.PropertyCategory;
 
 
 import com.unity3d.ads.*;
@@ -58,10 +59,12 @@ public class UnityAdsSimple extends AndroidNonvisibleComponent
         this.testMode = value;
     }
 
-    @SimpleProperty
-    public boolean TestMode() {
-        return this.testMode;
-    }
+    @SimpleProperty(
+        category = PropertyCategory.BEHAVIOR
+)
+public boolean TestMode() {
+    return testMode;
+}
 
     @DesignerProperty
     @SimpleProperty
@@ -69,10 +72,12 @@ public class UnityAdsSimple extends AndroidNonvisibleComponent
         this.gameId = value;
     }
 
-    @SimpleProperty
-    public String GameId() {
-        return this.gameId == null ? "" : this.gameId;
-    }
+    @SimpleProperty(
+        category = PropertyCategory.BEHAVIOR
+)
+public String GameId() {
+    return gameId;
+}
 
     // =========================
     // INITIALIZATION EVENTS
