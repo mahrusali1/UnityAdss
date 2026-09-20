@@ -44,13 +44,70 @@ jobs:
           echo "=== lib/deps ==="
           ls -lah lib/deps
 
+          echo "=== Unity Ads JAR ==="
+          find lib/deps -maxdepth 1 -type f -name "*.jar" -print
+
       - name: Build Extension
         run: ant extensions
+
+      - name: Diagnose build output
+        run: |
+          echo "========================================"
+          echo "=== build/externalComponents-classes ==="
+          echo "========================================"
+
+          if [ -d build/externalComponents-classes ]; then
+            ls -lah build/externalComponents-classes
+
+            echo "--- Recursive contents ---"
+            find build/externalComponents-classes -maxdepth 5 -print
+          else
+            echo "DIRECTORY TIDAK ADA"
+          fi
+
+          echo ""
+          echo "========================================"
+          echo "=== build/externalComponents ==="
+          echo "========================================"
+
+          if [ -d build/externalComponents ]; then
+            ls -lah build/externalComponents
+
+            echo "--- Recursive contents ---"
+            find build/externalComponents -maxdepth 5 -print
+          else
+            echo "DIRECTORY TIDAK ADA"
+          fi
+
+          echo ""
+          echo "========================================"
+          echo "=== out ==="
+          echo "========================================"
+
+          if [ -d out ]; then
+            ls -lah out
+
+            echo "--- Recursive contents ---"
+            find out -maxdepth 5 -print
+          else
+            echo "DIRECTORY TIDAK ADA"
+          fi
+
+          echo ""
+          echo "========================================"
+          echo "=== ALL AIX FILES ==="
+          echo "========================================"
+
+          find . -type f -name "*.aix" -print
 
       - name: Check AIX
         run: |
           echo "=== OUT ==="
           ls -lah out
+
+          echo ""
+          echo "=== AIX ==="
+          find out -maxdepth 1 -type f -name "*.aix" -print
 
       - name: Upload AIX
         uses: actions/upload-artifact@v4
